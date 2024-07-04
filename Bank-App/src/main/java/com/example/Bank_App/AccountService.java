@@ -2,6 +2,13 @@ package com.example.Bank_App;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import java.util.Optional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
 import java.util.Optional;
 
@@ -10,6 +17,57 @@ public class AccountService {
 
     @Autowired
     private AccountRepository accountRepository;
+
+    @Autowired
+    private RestTemplate restTemplate;
+
+    @Autowired
+    private WebClient.Builder webClientBuilder;
+
+    @Value("${app2.base.url}")
+    private String app2BaseUrl;
+
+    @Value("${app3.base.url}")
+    private String app3BaseUrl;
+
+    public Mono<String> registerUser(Object user) {
+        return webClientBuilder.build()
+                .post()
+                .uri(app2BaseUrl + "/register")
+                .bodyValue(user)
+                .retrieve()
+                .bodyToMono(String.class);
+    }
+
+    public Mono<String> generateToken(Object tokenReqRes) {
+        return webClientBuilder.build()
+                .post()
+                .uri(app2BaseUrl + "/generate-token")
+                .bodyValue(tokenReqRes)
+                .retrieve()
+                .bodyToMono(String.class);
+    }
+
+    public Mono<String> validateToken(Object tokenReqRes) {
+        return webClientBuilder.build()
+                .post()
+                .uri(app2BaseUrl + "/validate-token")
+                .bodyValue(tokenReqRes)
+                .retrieve()
+                .bodyToMono(String.class);
+    }
+
+    public Mono<Double> getInterestRate() {
+        return webClientBuilder.build()
+                .get()
+                .uri(app3BaseUrl + "/rateOfInterest")
+                .retrieve()
+                .bodyToMono(Double.class)
+                .doOnError(error -> {
+                    System.err.println("Error fetching interest rate: " + error.getMessage());
+                })
+                .onErrorResume(ex -> Mono.empty());
+    }
 
     public Account createAccount(Account account) {
         return accountRepository.save(account);

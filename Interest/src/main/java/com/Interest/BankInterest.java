@@ -1,11 +1,11 @@
-package com.example.Bank_App;
+package com.Interest;
 
 import org.springframework.stereotype.Service;
 
 @Service
 
 public class BankInterest {
-    public double rateodinterest(){
+    public double rateofinterest(){
         double interestrate = 2.5;
         return interestrate;
     }

@@ -1,4 +1,4 @@
-package com.example.Bank_App;
+package com.Security;
 
 import jakarta.persistence.*;
 import lombok.Data;
