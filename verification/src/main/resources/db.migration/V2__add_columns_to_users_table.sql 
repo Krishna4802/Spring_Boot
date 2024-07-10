@@ -1,0 +1,6 @@
+ALTER TABLE fly_users
+ADD COLUMN phone_number VARCHAR(15),
+ADD COLUMN address VARCHAR(255);
+
+
+
