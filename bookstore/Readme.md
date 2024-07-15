@@ -1,3 +1,5 @@
+## How to run docker file
+
 1. Essential Files
    * Dockerfile: Defines the Docker image for your Spring Boot application.
    * docker-compose.yml: Defines the services, including the Spring Boot application and PostgreSQL, and their configurations.
